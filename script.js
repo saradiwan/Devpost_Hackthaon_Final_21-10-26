@@ -18,10 +18,31 @@ let toastTimer;
 
 function toast(msg) {
     const el = $('toast');
-    el.textContent = msg;
-    el.classList.add('show');
+
     clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => el.classList.remove('show'), 3200);
+    el.innerHTML = '';
+
+    const message = document.createElement('span');
+    message.textContent = msg;
+
+    const close = document.createElement('button');
+    close.className = 'toast-close';
+    close.type = 'button';
+    close.textContent = '×';
+    close.setAttribute('aria-label', 'Close notification');
+
+    close.addEventListener('click', () => {
+        el.classList.remove('show');
+        clearTimeout(toastTimer);
+    });
+
+    el.appendChild(message);
+    el.appendChild(close);
+    el.classList.add('show');
+
+    toastTimer = setTimeout(() => {
+        el.classList.remove('show');
+    }, 3200);
 }
 
 function addEvent(title, desc, type = 'amber', tag = 'SYSTEM') {
@@ -78,7 +99,7 @@ function reading() {
 
 async function infer(d) {
     try {
-        const response = await fetch('http://127.0.0.1:8000/predict', {
+        const response = await fetch('https://devpost-hackthaon-final-21-10-26.onrender.com/predict', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(d),
@@ -119,7 +140,7 @@ async function infer(d) {
 async function fetchLiveWater() {
     try {
         const response = await fetch(
-            'http://127.0.0.1:8000/live-water',
+            'https://devpost-hackthaon-final-21-10-26.onrender.com/live-water',
             {
                 cache: 'no-store',
                 signal: AbortSignal.timeout(12000)
