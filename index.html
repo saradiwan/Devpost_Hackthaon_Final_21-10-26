@@ -1,0 +1,288 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#071923">
+  <title>DesalGuard | OT Security</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="logo">◈</div>
+      <div>
+        <b>DesalGuard</b>
+        <small>WATER OT SECURITY</small>
+      </div>
+    </div>
+
+    <div class="navlabel">MONITORING</div>
+
+    <a class="nav active" href="#overview">▦ <span>Overview</span></a>
+    <a class="nav" href="#sensors">⌁ <span>Sensor telemetry</span></a>
+    <a class="nav" href="#incidents">⚠ <span>Incidents</span><i id="navIncidents">1</i></a>
+
+    <div class="sidebottom">
+      <div class="system">
+        <span class="pulse"></span>
+        <div>
+          <b>Demo environment</b>
+          <small>Synthetic telemetry only</small>
+        </div>
+      </div>
+      <small class="muted">DESALGUARD v1.1 · HACKATHON DEMO</small>
+    </div>
+  </aside>
+
+  <main>
+    <header>
+      <div>
+        <div class="eyebrow">CYBER-PHYSICAL MONITORING / UAE + FRANCE</div>
+        <h1>Water infrastructure security</h1>
+        <p class="muted">Real-time anomaly detection for desalination operations.</p>
+      </div>
+
+      <div class="headright">
+        <span class="live">
+          <span class="pulse"></span>
+          <span id="connection">Connecting…</span>
+        </span>
+        <button class="btn ghost" id="report">↧ Export report</button>
+      </div>
+    </header>
+
+    <section class="hero">
+      <div>
+        <div class="eyebrow cyan">MACHINE LEARNING · ISOLATION FOREST</div>
+        <h2>Detect the unusual.<br><span>Protect the essential.</span></h2>
+        <p>Incoming sensor readings are evaluated by an anomaly model. Alerts indicate unusual behaviour—not proof of an attack.</p>
+
+        <div class="heroactions">
+          <button class="btn primary" id="attack">⚡ Simulate attack scenario</button>
+          <button class="btn ghost" id="reset">Reset demo</button>
+        </div>
+      </div>
+
+      <div class="heroart">
+        <div class="rings">
+          <div class="ring r1"></div>
+          <div class="ring r2"></div>
+          <div class="ring r3"></div>
+          <div class="core">◈<small>OT / ML</small></div>
+          <span class="node n1">PRESSURE</span>
+          <span class="node n2">FLOW RATE</span>
+          <span class="node n3">SALINITY</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="metrics">
+      <article class="metric">
+        <div class="metrichead">SECURITY POSTURE <span class="metricicon">◈</span></div>
+        <div class="metricvalue" id="posture">MONITORING</div>
+        <div class="sub">
+          <span class="dot green"></span>
+          <span id="postureSub">No critical anomalies</span>
+        </div>
+      </article>
+
+      <article class="metric">
+        <div class="metrichead">SENSORS MONITORED <span class="metricicon">⌁</span></div>
+        <div class="metricvalue">06 <small>/ 06</small></div>
+        <div class="sub">Pressure, flow, salinity & pump</div>
+      </article>
+
+      <article class="metric">
+        <div class="metrichead">OPEN ALERTS <span class="metricicon">⚠</span></div>
+        <div class="metricvalue" id="alertCount">01</div>
+        <div class="sub">
+          <span class="dot amber"></span>
+          <span id="alertSub">Review recommended</span>
+        </div>
+      </article>
+
+      <article class="metric">
+        <div class="metrichead">PLANT HEALTH <span class="metricicon">⌁</span></div>
+        <div class="metricvalue"><span id="health">98</span><small>%</small></div>
+        <div class="healthbar">
+          <span id="healthbar" style="width:98%"></span>
+        </div>
+      </article>
+    </section>
+
+    <section class="grid">
+      <article class="panel chartpanel">
+        <div class="panelhead">
+          <div>
+            <h3>Live sensor telemetry</h3>
+            <p class="muted">Rolling readings · updates every few seconds</p>
+          </div>
+
+          <select id="sensor">
+            <option value="pressure">Pressure (bar)</option>
+            <option value="flow">Flow rate (m³/h)</option>
+            <option value="salinity">Salinity (ppm)</option>
+          </select>
+        </div>
+
+        <div class="chartlegend">
+          <span><i class="legendline"></i> Live reading</span>
+          <span><i class="legendband"></i> Expected range</span>
+          <span id="mlStatus" class="pill">ML: initializing</span>
+        </div>
+
+        <div class="chart">
+          <canvas id="chart"></canvas>
+        </div>
+
+        <div class="chartfoot">
+          <span>LAST 30 SAMPLES</span>
+          <span id="lastSample">Waiting for telemetry…</span>
+        </div>
+      </article>
+
+      <article class="panel modelpanel">
+        <div class="panelhead">
+          <div>
+            <h3>ML detection engine</h3>
+            <p class="muted">Isolation Forest inference</p>
+          </div>
+          <span class="modelbadge">● MODEL</span>
+        </div>
+
+        <div class="modelstate">
+          <div class="modelorb">AI</div>
+          <div>
+            <b id="modelTitle">Waiting for data</b>
+            <small id="modelDesc">Model will score incoming readings.</small>
+          </div>
+        </div>
+
+        <div class="scorelabel">
+          <span>Latest anomaly score</span>
+          <b id="score">—</b>
+        </div>
+
+        <div class="scorebar">
+          <span id="scorebar"></span>
+        </div>
+
+        <div class="threshold">
+          <span>Normal</span>
+          <span>Alert threshold</span>
+        </div>
+
+        <div class="modeldetails">
+          <div>
+            <span>Inference mode</span>
+            <b id="mode">Connecting backend</b>
+          </div>
+          <div>
+            <span>Latest prediction</span>
+            <b id="prediction">Pending</b>
+          </div>
+          <div>
+            <span>Last update</span>
+            <b id="updated">—</b>
+          </div>
+        </div>
+
+        <div class="note">
+          Scores are generated by the backend model when available.
+          Browser fallback is clearly labelled and uses a simple statistical rule.
+        </div>
+      </article>
+    </section>
+
+    <section class="grid lower" id="incidents">
+      <article class="panel">
+        <div class="panelhead">
+          <div>
+            <h3>Security event timeline</h3>
+            <p class="muted">Recent detections and system activity</p>
+          </div>
+          <button class="textbtn" id="clearEvents">Clear view</button>
+        </div>
+
+        <div class="events" id="events">
+          <div class="event">
+            <span class="eventmark ambermark">!</span>
+            <div>
+              <b>Demo initialized</b>
+              <p>Telemetry simulation starting. ML backend status will appear above.</p>
+              <small>JUST NOW · SYSTEM</small>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="panel" id="sensors">
+        <div class="panelhead">
+          <div>
+            <h3>Sensor inventory</h3>
+            <p class="muted">Synthetic plant telemetry</p>
+          </div>
+          <span class="pill">6 ACTIVE</span>
+        </div>
+
+        <div class="tablewrap">
+          <table>
+            <thead>
+              <tr>
+                <th>SENSOR</th>
+                <th>READING</th>
+                <th>STATUS</th>
+              </tr>
+            </thead>
+
+            <tbody id="sensorRows">
+              <tr>
+                <td>PT-101 <small>Pressure</small></td>
+                <td>—</td>
+                <td><span class="status ok">Waiting</span></td>
+              </tr>
+              <tr>
+                <td>FT-202 <small>Flow rate</small></td>
+                <td>—</td>
+                <td><span class="status ok">Waiting</span></td>
+              </tr>
+              <tr>
+                <td>ST-303 <small>Salinity</small></td>
+                <td>—</td>
+                <td><span class="status ok">Waiting</span></td>
+              </tr>
+              <tr>
+                <td>PT-104 <small>Pressure</small></td>
+                <td>—</td>
+                <td><span class="status ok">Waiting</span></td>
+              </tr>
+              <tr>
+                <td>FT-205 <small>Flow rate</small></td>
+                <td>—</td>
+                <td><span class="status ok">Waiting</span></td>
+              </tr>
+              <tr>
+                <td>PU-01 <small>Pump state</small></td>
+                <td>RUN</td>
+                <td><span class="status ok">Nominal</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </article>
+    </section>
+
+    <footer>
+      DESALGUARD IS A SIMULATION-ONLY PROTOTYPE · Never connect to operational water-treatment equipment.
+    </footer>
+  </main>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="script.js"></script>
+  <script src="incident_response.js"></script>
+</body>
+</html>
